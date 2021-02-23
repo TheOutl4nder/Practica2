@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+    <title>Practica 2</title>
+</head>
+<body>
+    <h1>Noticias</h1>
+
+    <form class="search">
+        <input class="input" type="text" id="query" name="search">
+        <input type="submit" value="Search!">
+    </form>
+
+    <main class="screen25" id="news-container">
+        
+    </main>
+    
+    <script type="text/x-handlebars-template" id='news-template'>
+        {{#each articles}}
+        <div>
+            <img src="{{urlToImage}}" />
+            <h2>{{title}}</h2>
+            <p>{{description}}</p>
+            <a href="{{url}}" target="_blank">Ver más</a>
+        </div>
+        {{/each}}
+    </script>
+
+    <script src="/main.js" type="application/javascript"></script>
+</body>
+</html>

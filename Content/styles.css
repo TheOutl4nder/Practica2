@@ -1,0 +1,47 @@
+@charset "UTF-8";
+.screen25 {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(25%, 1fr)); }
+
+.screen50 {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr)); }
+
+.screen75 {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(75%, 1fr)); }
+
+.screen100 {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)); }
+
+@media screen and (max-width: 768px) {
+  .screen25 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 20rem));
+    justify-content: center; }
+  .screen50 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 20rem));
+    justify-content: center; }
+  .screen75 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 20rem));
+    justify-content: center; }
+  .screen100 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 100%);
+    justify-content: center; } }
+
+/*la imagen está demasiado grande entonces aplico esta regla en general para que se vea completa*/
+img {
+  max-width: 50%;
+  max-height: 50%; }
+
+h1 {
+  text-align: center;
+  align-self: center; }
