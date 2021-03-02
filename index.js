@@ -3,8 +3,10 @@ const express = require('express');
 const path=require('path');
 const fetch = require('node-fetch');
 const exphbs = require('express-handlebars');
+const dotenv=require('dotenv').config();
 
-const key = '6c9196426ffb45f88380c7a712d54849';
+const port = process.env.PORT;
+const key = process.env.API_KEY;
 
 const app = express();
 app.use(express.static(path.join(__dirname+'/Content')));
@@ -15,6 +17,11 @@ app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname,'Views','index.html'));
 })
 
+app.get('/form.html',(req,res)=>{
+    res.statusCode=200;
+    res.sendFile(path.join(__dirname,'Views','form.html'));
+})
+
 
 app.get('/search/',(req,res)=>{
     console.log('on it');
@@ -23,6 +30,9 @@ app.get('/search/',(req,res)=>{
     let url = 'https://newsapi.org/v2/everything?q=' + params.query + '&apiKey=' + key;
     fetch(url).then(resp=>resp.json())
     .then(json => res.send(json));
+    console.log("done!");
 });
 
-app.listen(3000);
+
+
+app.listen(port);
