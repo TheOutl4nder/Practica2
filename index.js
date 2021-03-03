@@ -7,7 +7,6 @@ const dotenv=require('dotenv').config();
 const bodyParser=require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const multer = require('multer');
-const { resourceLimits } = require('worker_threads');
 
 const port = process.env.PORT;
 const key = process.env.API_KEY;
@@ -36,7 +35,6 @@ const upload = multer({
     } 
 }).single('image');
 
-
 //Filtro de imagenes
 function checkFileType(file,cb){
     const fileTypes= /jpeg|jpg|png|gif/;
@@ -59,16 +57,18 @@ app.get('/form.html',(req,res)=>{
     res.sendFile(path.join(__dirname,'Views','form.html'));
 })
 
-app.post('/form.html',async (req,res)=>{
+app.post('/form.html', upload,async (req,res)=>{
     res.statusCode=200;
     let form=req.body;
+    let image=req.file;
+    console.log(image);
     MongoClient.connect(mongouri, { useUnifiedTopology: true }, async function(err, client) {
         if(err) {
              console.log('Error\n',err);
         }
         console.log('Connected to Mongo');
         const collection = client.db("news_app").collection("user");
-        await collection.insertOne({user: form.user, email: form.email, password: form.password});
+        await collection.insertOne({user: form.user, email: form.email, password: form.password, image: image.path});
         client.close();
      });
      upload(req,res,(err)=>{
@@ -76,7 +76,7 @@ app.post('/form.html',async (req,res)=>{
             console.log(err);
         }
      });
-     res.sendFile(path.join(__dirname,'Views','form.html'));
+     res.redirect('form.html');
 })
 
 app.get('/search/',(req,res)=>{
