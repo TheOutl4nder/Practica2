@@ -76,8 +76,13 @@ app.post('/form.html', upload,async (req,res)=>{
             console.log(err);
         }
      });
-     res.redirect('form.html');
+     res.redirect('success');
 })
+
+app.get('/success',(req,res)=>{
+    res.statusCode=200;
+    res.sendFile(path.join(__dirname,'Views','registerSuccess.html'));
+});
 
 app.get('/search/',(req,res)=>{
     console.log('on it');
