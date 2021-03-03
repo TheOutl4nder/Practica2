@@ -7,10 +7,11 @@
     <title>Formulario (Practica 3)</title>
     <h1>Registro</h1>
     <a href="/">Regresar a noticias</a>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         Usuario: <input type="text" name="user"> <br>
         Correo <input type="email" name="email"> <br>
         Password <input type="password" name="password"> <br>
+        Foto de Perfil <input type="file" name="image"> <br>
         <input type="submit" value="Enviar">
     </form>
 </head>

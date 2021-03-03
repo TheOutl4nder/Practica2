@@ -6,6 +6,8 @@ const exphbs = require('express-handlebars');
 const dotenv=require('dotenv').config();
 const bodyParser=require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+const multer = require('multer');
+const { resourceLimits } = require('worker_threads');
 
 const port = process.env.PORT;
 const key = process.env.API_KEY;
@@ -17,6 +19,35 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json()); 
 app.use(express.static(path.join(__dirname+'/Content')));
 app.use(express.static(path.join(__dirname+'/Scripts')));
+
+//Storage Engine
+const storage = multer.diskStorage({
+    destination: path.join(__dirname+'/Content/public/uploads'),
+    filename: function(req,file,cb){
+        cb(null,file.fieldname+'-'+Date.now()+path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits:{fileSize:1024*1024*10}, //10MB
+    fileFilter: function(req,file,cb){
+        checkFileType(file,cb);
+    } 
+}).single('image');
+
+
+//Filtro de imagenes
+function checkFileType(file,cb){
+    const fileTypes= /jpeg|jpg|png|gif/;
+    const extname=fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimeType = fileTypes.test(file.mimeType);
+
+    if(extname && extname)
+        return cb(null,true);
+    else
+        cb('Invalid file!');
+}
 
 app.get('/',(req,res)=>{
     res.statusCode=200;
@@ -39,6 +70,11 @@ app.post('/form.html',async (req,res)=>{
         const collection = client.db("news_app").collection("user");
         await collection.insertOne({user: form.user, email: form.email, password: form.password});
         client.close();
+     });
+     upload(req,res,(err)=>{
+        if(err){
+            console.log(err);
+        }
      });
      res.sendFile(path.join(__dirname,'Views','form.html'));
 })
